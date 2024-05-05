@@ -1,22 +1,107 @@
 "use client";
 
 import Image from "next/image";
-import * as PIXI from "pixi.js";
+import { Application, Assets, Sprite } from "pixi.js";
 import { useEffect } from "react";
+import { keyboard } from "@/src/util/keyboard.js";
 
 export default function Home() {
-  useEffect(() => {
-    const app = new PIXI.Application();
+	useEffect(() => {
+		var player, 
+		state;
 
-    const initApp = async () => {
-      await app.init();
-      document.body.appendChild(app.canvas);
-    }
+		const app = new Application();
 
-    initApp();
-  });
-  return (
-    <div>
-    </div>
-  );
+		function gameLoop(delta) {
+			player.x += player.vx;
+			player.y += player.vy;
+			// state(delta);
+		}
+
+		function play(delta) {
+
+		}
+
+		const setup = async () => {
+			await app.init({ background: '#171717', resizeTo: window });
+			document.body.appendChild(app.canvas);
+
+			const texture = await Assets.load('https://pixijs.com/assets/bunny.png');
+			player = new Sprite(texture);
+
+			app.stage.addChild(player);
+
+			player.anchor.set(0.5)
+
+			player.x = app.screen.width / 2
+			player.y = app.screen.height / 2
+			player.vx = 0;
+			player.vy = 0;
+			let acc = 2;
+
+			//Capture the keyboard arrow keys
+			const left = keyboard("ArrowLeft"),
+				  up = keyboard("ArrowUp"),
+				  right = keyboard("ArrowRight"),
+				  down = keyboard("ArrowDown");
+
+			//Left arrow key `press` method
+			left.press = () => {
+				player.vx = -acc;
+			};
+			
+			//Left arrow key `release` method
+			left.release = () => {
+				if (!right.isDown) {
+					player.vx = 0;
+				}
+			};
+			//Up
+			up.press = () => {
+				player.vy = -acc;
+			};
+			up.release = () => {
+				if (!down.isDown) {
+					player.vy = 0;
+				}
+			};
+			//Right
+			right.press = () => {
+				player.vx = acc;
+			};
+			right.release = () => {
+				if (!left.isDown) {
+					player.vx = 0;
+				}
+			};
+			//Down
+			down.press = () => {
+				player.vy = acc;
+			};
+			down.release = () => {
+				if (!up.isDown) {
+					player.vy = 0;
+				}
+			};
+
+			state = play;
+		}
+
+		const preload = async() => {
+			console.log('preload');
+		}
+
+		// run
+		const run = async () => {
+			await setup();
+			await preload();
+			app.ticker.add((delta) => gameLoop(delta));
+		};
+
+		run();
+	});
+	return (
+		<div>
+		</div>
+		);
 }
