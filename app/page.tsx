@@ -40,10 +40,10 @@ export default function Home() {
 			let acc = 2;
 
 			//Capture the keyboard arrow keys
-			const left = keyboard("ArrowLeft"),
-				  up = keyboard("ArrowUp"),
-				  right = keyboard("ArrowRight"),
-				  down = keyboard("ArrowDown");
+			const left = keyboard("a"),
+				  up = keyboard("w"),
+				  right = keyboard("d"),
+				  down = keyboard("s");
 
 			//Left arrow key `press` method
 			left.press = () => {
