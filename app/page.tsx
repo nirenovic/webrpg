@@ -47,41 +47,33 @@ export default function Home() {
 
 			//Left arrow key `press` method
 			left.press = () => {
-				player.vx = -acc;
+				player.vx -= acc;
 			};
 			
 			//Left arrow key `release` method
 			left.release = () => {
-				if (!right.isDown) {
-					player.vx = 0;
-				}
+				player.vx += acc;
 			};
 			//Up
 			up.press = () => {
-				player.vy = -acc;
+				player.vy -= acc;
 			};
 			up.release = () => {
-				if (!down.isDown) {
-					player.vy = 0;
-				}
+				player.vy += acc;
 			};
 			//Right
 			right.press = () => {
-				player.vx = acc;
+				player.vx += acc;
 			};
 			right.release = () => {
-				if (!left.isDown) {
-					player.vx = 0;
-				}
+				player.vx -= acc;
 			};
 			//Down
 			down.press = () => {
-				player.vy = acc;
+				player.vy += acc;
 			};
 			down.release = () => {
-				if (!up.isDown) {
-					player.vy = 0;
-				}
+				player.vy -= acc;
 			};
 
 			state = play;
